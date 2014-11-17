@@ -1,0 +1,28 @@
+<project name="xBlazeSign" default="build" basedir=".">
+  <description>xBlazeSign Build File</description>
+  <path id="classpath">
+    <fileset dir="/lib" includes="**/*.jar"/>
+  </path>
+  <target name="pre" description="Prepare the Workspace for Compile.">
+    <antcall target="clean" />
+    <!-- Create necessary folders -->
+    <mkdir dir="bin/" />
+  </target>
+  <!-- Compile the code -->
+	<target name="build" depends="pre" description="Compile the Source Code.">
+	  <javac srcdir="src/" destdir="bin/" debug="on" debuglevel="lines,vars,source" includeantruntime="false" encoding="Cp1252" classpathref="classpath">
+      <classpath>
+        <pathelement path="lib/" />
+        <pathelement location="lib/spigot-1.7.9-R0.2-SNAPSHOT.jar" />
+        <pathelement location="lib/xBlazeCore.jar" />
+      </classpath>
+    </javac>
+  </target>
+  <target name="jar" depends="build" description="Compress to a Jar File.">
+    <jar jarfile="release/release.jar" basedir="bin/" encoding="Cp1252"></jar>
+  </target>
+  <target name="clean" description="Remove all Temporary files/folders">
+    <delete dir="bin/" />
+    <delete dir="release/" />
+  </target>
+</project>
