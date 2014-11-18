@@ -1,6 +1,7 @@
 package net.xblaze.xBlazeSign;
 
 import net.xblaze.xBlazeCore.api.nms.NmsManager;
+import net.xblaze.xBlazeCore.api.types.ConsoleMessageType;
 import net.xblaze.xBlazeCore.api.util.ConsoleManager;
 import net.xblaze.xBlazeCore.api.util.InventoryManager;
 import net.xblaze.xBlazeCore.api.util.ItemManager;
@@ -10,14 +11,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class BlazeSign extends JavaPlugin implements Listener {
-	public ConsoleManager console = new ConsoleManager();
+	public ConsoleManager console = new ConsoleManager(this);
 	public InventoryManager invman = new InventoryManager();
 	public ItemManager itemman = new ItemManager();
 	public NmsManager nmsman = new NmsManager();
 	public CommandExecutor ce = new CommandManager(this);
 
 	public void onEnable() {
-		this.console.logInfo(this, " has been enabled sucessfully!");
+		this.console.log(ConsoleMessageType.INFO, " has been enabled sucessfully!");
 		getServer().getPluginManager().registerEvents(this, this);
 		getCommand("sign").setExecutor(this.ce);
 		getCommand("csign").setExecutor(this.ce);
@@ -33,6 +34,6 @@ public final class BlazeSign extends JavaPlugin implements Listener {
 	}
 
 	public void onDisable() {
-		this.console.logInfo(this, " has been disabled sucessfully!");
+		this.console.log(ConsoleMessageType.INFO, " has been disabled sucessfully!");
 	}
 }
