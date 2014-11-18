@@ -9,18 +9,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class BlazeSign
-extends JavaPlugin
-implements Listener
-{
+public final class BlazeSign extends JavaPlugin implements Listener {
 	public ConsoleManager console = new ConsoleManager();
 	public InventoryManager invman = new InventoryManager();
 	public ItemManager itemman = new ItemManager();
 	public NmsManager nmsman = new NmsManager();
 	public CommandExecutor ce = new CommandManager(this);
 
-	public void onEnable()
-	{
+	public void onEnable() {
 		this.console.logInfo(this, " has been enabled sucessfully!");
 		getServer().getPluginManager().registerEvents(this, this);
 		getCommand("sign").setExecutor(this.ce);
@@ -36,8 +32,7 @@ implements Listener
 		getServer().getPluginManager().registerEvents(new EventHandlers(this), this);
 	}
 
-	public void onDisable()
-	{
+	public void onDisable() {
 		this.console.logInfo(this, " has been disabled sucessfully!");
 	}
 }

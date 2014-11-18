@@ -33,10 +33,8 @@ public class EventHandlers implements Listener {
 		this.pl = pl;
 	}
 
-	@SuppressWarnings("deprecation")
 	@EventHandler
-	public void onPlayerQuit(PlayerQuitEvent e)
-	{
+	public void onPlayerQuit(PlayerQuitEvent e) {
 		Player player = e.getPlayer();
 		if (player.hasMetadata("sign-index")) {
 			int index = player.getMetadata("sign-index").get(0).asInt();
@@ -45,37 +43,32 @@ public class EventHandlers implements Listener {
 			}
 			player.removeMetadata("sign-index", pl);
 		}
-		if (player.getEnderChest().contains(Material.WRITTEN_BOOK))
-		{
+		if (player.getEnderChest().contains(Material.WRITTEN_BOOK)) {
 			ListIterator<ItemStack> hi = player.getEnderChest().iterator();
-			while (hi.hasNext())
-			{
+			while (hi.hasNext()) {
 				ItemStack item = (ItemStack)hi.next();
-				try
-				{
+				try {
 					BookMeta bm = (BookMeta)item.getItemMeta();
-					if ((!bm.getAuthor().equalsIgnoreCase(player.getName())) && (bm.getTitle().equalsIgnoreCase("Autograph Book")))
-					{
+					if ((!bm.getAuthor().equalsIgnoreCase(player.getName())) && (bm.getTitle().equalsIgnoreCase("Autograph Book"))) {
 						Player owner = Bukkit.getPlayer(bm.getAuthor());
 						player.getEnderChest().remove(item);
 						owner.getInventory().addItem(new ItemStack[] { item });
 					}
+				} catch (ClassCastException ignore) {
+					
+				} catch (NullPointerException ignore) {
+					
 				}
-				catch (ClassCastException localClassCastException) {}catch (NullPointerException localNullPointerException) {}
 			}
 		}
 		Player owner;
-		if (player.getInventory().contains(Material.WRITTEN_BOOK))
-		{
+		if (player.getInventory().contains(Material.WRITTEN_BOOK)) {
 			ListIterator<ItemStack> hi = player.getInventory().iterator();
-			while (hi.hasNext())
-			{
+			while (hi.hasNext()) {
 				ItemStack item = (ItemStack)hi.next();
-				try
-				{
+				try {
 					BookMeta bm = (BookMeta)item.getItemMeta();
-					if ((!bm.getAuthor().equalsIgnoreCase(player.getName())) && (bm.getTitle().equalsIgnoreCase("Autograph Book")))
-					{
+					if ((!bm.getAuthor().equalsIgnoreCase(player.getName())) && (bm.getTitle().equalsIgnoreCase("Autograph Book"))) {
 						owner = Bukkit.getPlayer(bm.getAuthor());
 						player.getInventory().remove(item);
 						owner.getInventory().addItem(new ItemStack[] { item });
@@ -84,19 +77,14 @@ public class EventHandlers implements Listener {
 				catch (ClassCastException localClassCastException1) {}catch (NullPointerException localNullPointerException1) {}
 			}
 		}
-		for (Player p : Bukkit.getOnlinePlayers())
-		{
-			if (p.getInventory().contains(Material.WRITTEN_BOOK))
-			{
+		for (Player p : Bukkit.getOnlinePlayers()) {
+			if (p.getInventory().contains(Material.WRITTEN_BOOK)) {
 				ListIterator<ItemStack> hi = p.getInventory().iterator();
-				while (hi.hasNext())
-				{
+				while (hi.hasNext()) {
 					ItemStack item = (ItemStack)hi.next();
-					try
-					{
+					try {
 						BookMeta bm = (BookMeta)item.getItemMeta();
-						if ((bm.getAuthor().equalsIgnoreCase(player.getName())) && (bm.getTitle().equalsIgnoreCase("Autograph Book")))
-						{
+						if ((bm.getAuthor().equalsIgnoreCase(player.getName())) && (bm.getTitle().equalsIgnoreCase("Autograph Book"))) {
 							p.getInventory().remove(item);
 							player.getInventory().addItem(new ItemStack[] { item });
 						}
@@ -105,40 +93,31 @@ public class EventHandlers implements Listener {
 				}
 			}
 		}
-		for (Player p : Bukkit.getOnlinePlayers())
-		{
-			if (p.getEnderChest().contains(Material.WRITTEN_BOOK))
-			{
+		for (Player p : Bukkit.getOnlinePlayers()) {
+			if (p.getEnderChest().contains(Material.WRITTEN_BOOK)) {
 				ListIterator<ItemStack> hi = p.getEnderChest().iterator();
-				while (hi.hasNext())
-				{
+				while (hi.hasNext()) {
 					ItemStack item = (ItemStack)hi.next();
-					try
-					{
+					try {
 						BookMeta bm = (BookMeta)item.getItemMeta();
-						if ((bm.getAuthor().equalsIgnoreCase(player.getName())) && (bm.getTitle().equalsIgnoreCase("Autograph Book")))
-						{
+						if ((bm.getAuthor().equalsIgnoreCase(player.getName())) && (bm.getTitle().equalsIgnoreCase("Autograph Book"))) {
 							p.getEnderChest().remove(item);
 							player.getInventory().addItem(new ItemStack[] { item });
 						}
-					}
-					catch (ClassCastException localClassCastException3) {}catch (NullPointerException localNullPointerException3) {}
+					} catch (ClassCastException ignore) {} catch (NullPointerException ignore) {}
 				}
 			}
 		}
 	}
 
 	@EventHandler
-	public void onItemDrop(PlayerDropItemEvent e)
-	{
+	public void onItemDrop(PlayerDropItemEvent e) {
 		ItemStack i = e.getItemDrop().getItemStack();
-		if ((Bukkit.getServer().getPluginManager().isPluginEnabled("xBlazeBand")) && 
-				(i.getType() == Material.PAPER)) {
+		if ((Bukkit.getServer().getPluginManager().isPluginEnabled("xBlazeBand")) && (i.getType() == Material.PAPER)) {
 			return;
-		    }
+		}
 		if (i.getType().equals(Material.WRITTEN_BOOK)) {
-			try
-			{
+			try {
 				BookMeta bm = (BookMeta)i.getItemMeta();
 				if (bm.getTitle().equalsIgnoreCase("Color Book")) {
 					e.getItemDrop().remove();
@@ -154,8 +133,7 @@ public class EventHandlers implements Listener {
 			}
 		}
 		BlockIterator it = new BlockIterator(e.getPlayer(), 10);
-		for (LivingEntity ent : livingE)
-		{
+		for (LivingEntity ent : livingE) {
 			Block block = it.next();
 			int bx = block.getX();
 			int by = block.getY();
@@ -166,11 +144,9 @@ public class EventHandlers implements Listener {
 			double ey = loc.getY();
 			double ez = loc.getZ();
 			if ((bx - 0.75D <= ex) && (ex <= bx + 1.75D) && (bz - 0.75D <= ez) && (ez <= bz + 1.75D) && (by - 1 <= ey) && (ey <= by + 2.5D)) {
-				if ((ent instanceof Player))
-				{
+				if ((ent instanceof Player)) {
 					Player target = (Player)ent;
-					if (isOnline(target).booleanValue())
-					{
+					if (isOnline(target).booleanValue()) {
 						if (!((p.isSneaking() && target.isSneaking()) && !(target.hasMetadata("dropper")))) return;
 						if (target.getInventory().getHeldItemSlot() == 8) {
 							this.invman.replace(target, 7, e.getItemDrop().getItemStack());
@@ -180,15 +156,12 @@ public class EventHandlers implements Listener {
 						e.getItemDrop().remove();
 						return;
 					}
-					if (e.getItemDrop().getItemStack().getType().equals(Material.WRITTEN_BOOK))
-					{
+					if (e.getItemDrop().getItemStack().getType().equals(Material.WRITTEN_BOOK)) {
 						e.getPlayer().sendMessage(ChatColor.GRAY + target.getName() + " has signed your book with a test message.");
 						e.getPlayer().sendMessage(ChatColor.GRAY + "If you wish to remove the test signature, please use /rmpage");
 						this.invman.hold(target, e.getItemDrop().getItemStack());
 						BookMeta bookmeta = (BookMeta)target.getItemInHand().getItemMeta();
-						if ((bookmeta.hasTitle()) && 
-								(bookmeta.getTitle().equalsIgnoreCase("Autograph Book")))
-						{
+						if ((bookmeta.hasTitle()) && (bookmeta.getTitle().equalsIgnoreCase("Autograph Book"))) {
 							bookmeta.getPages();
 							String buffer = "This is a test message.";
 							bookmeta.addPage(new String[] { buffer + "\n§0" + "-" + target.getName() });
@@ -204,8 +177,7 @@ public class EventHandlers implements Listener {
 		}
 	}
 
-	public Boolean isOnline(Player p)
-	{
+	public Boolean isOnline(Player p) {
 		for (Player pl : Bukkit.getOnlinePlayers() ) {
 			if (p.equals(pl)) {
 				return Boolean.valueOf(true);

@@ -28,17 +28,14 @@ public class CommandManager implements CommandExecutor {
 	private NmsManager nmsman;
 	private Plugin pl;
 
-	public CommandManager(BlazeSign pl)
-	{
+	public CommandManager(BlazeSign pl) {
 		this.nmsman = pl.nmsman;
 		this.invman = pl.invman;
 		this.pl = pl;
 	}
 
-	public void sendHelp(Player p, String command, String usage, String desc)
-	{
-		if (usage != null)
-		{
+	public void sendHelp(Player p, String command, String usage, String desc) {
+		if (usage != null) {
 			usage = " " + usage;
 			this.nmsman.newFancyMessage("")
 			.then(command + ChatColor.GRAY + usage)
@@ -49,19 +46,15 @@ public class CommandManager implements CommandExecutor {
 			.then(desc)
 			.color(ChatColor.GREEN)
 			.send(p);
-		}
-		else
-		{
+		} else {
 			this.nmsman.newFancyMessage(ChatColor.GOLD + command + ChatColor.DARK_GRAY + " - ").command(command).tooltip("§bClick to Execute!").then(desc).color(ChatColor.GREEN).send(p);
 		}
 	}
 
 	@SuppressWarnings("deprecation")
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
-	{
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		Player player = (Player)sender;
-		if (cmd.getName().equalsIgnoreCase("newbook"))
-		{
+		if (cmd.getName().equalsIgnoreCase("newbook")) {
 			if (player.hasMetadata("sign-index")) {
 				int index = player.getMetadata("sign-index").get(0).asInt();
 				for (int i = 0; i < index; i++) {
@@ -69,23 +62,17 @@ public class CommandManager implements CommandExecutor {
 				}
 				player.removeMetadata("sign-index", pl);
 			}
-			if ((Bukkit.getServer().getPluginManager().isPluginEnabled("xBlazeBand")) && 
-					(player.getInventory().getHeldItemSlot() == 8))
-			{
+			if ((Bukkit.getServer().getPluginManager().isPluginEnabled("xBlazeBand")) && (player.getInventory().getHeldItemSlot() == 8)){
 				player.sendMessage(ChatColor.RED + "You have a magic band in this slot. You are not permitted to remove it!");
 				return true;
 			}
-			if (player.getEnderChest().contains(Material.WRITTEN_BOOK))
-			{
+			if (player.getEnderChest().contains(Material.WRITTEN_BOOK)) {
 				ListIterator<ItemStack> hi = player.getEnderChest().iterator();
-				while (hi.hasNext())
-				{
+				while (hi.hasNext()) {
 					ItemStack item = (ItemStack)hi.next();
-					try
-					{
+					try {
 						BookMeta bm = (BookMeta)item.getItemMeta();
-						if ((bm.getAuthor().equalsIgnoreCase(player.getName())) && (bm.getTitle().equalsIgnoreCase("Autograph Book")))
-						{
+						if ((bm.getAuthor().equalsIgnoreCase(player.getName())) && (bm.getTitle().equalsIgnoreCase("Autograph Book"))) {
 							Player owner = Bukkit.getPlayer(bm.getAuthor());
 							player.getEnderChest().remove(item);
 							owner.getInventory().addItem(new ItemStack[] { item });
@@ -97,17 +84,13 @@ public class CommandManager implements CommandExecutor {
 					catch (ClassCastException localClassCastException) {}catch (NullPointerException localNullPointerException) {}
 				}
 			}
-			if (player.getInventory().contains(Material.WRITTEN_BOOK))
-			{
+			if (player.getInventory().contains(Material.WRITTEN_BOOK)) {
 				ListIterator<ItemStack> hi = player.getInventory().iterator();
-				while (hi.hasNext())
-				{
+				while (hi.hasNext()) {
 					ItemStack item = (ItemStack)hi.next();
-					try
-					{
+					try {
 						BookMeta bm = (BookMeta)item.getItemMeta();
-						if ((bm.getAuthor().equalsIgnoreCase(player.getName())) && (bm.getTitle().equalsIgnoreCase("Autograph Book")))
-						{
+						if ((bm.getAuthor().equalsIgnoreCase(player.getName())) && (bm.getTitle().equalsIgnoreCase("Autograph Book"))) {
 							Player owner = Bukkit.getPlayer(bm.getAuthor());
 							player.getInventory().remove(item);
 							this.invman.hold(owner, item);
@@ -118,16 +101,12 @@ public class CommandManager implements CommandExecutor {
 					catch (ClassCastException localClassCastException1) {}catch (NullPointerException localNullPointerException1) {}
 				}
 			}
-			for (Player p : Bukkit.getOnlinePlayers())
-			{
-				if (p.getInventory().contains(Material.WRITTEN_BOOK))
-				{
+			for (Player p : Bukkit.getOnlinePlayers()) {
+				if (p.getInventory().contains(Material.WRITTEN_BOOK)) {
 					ListIterator<ItemStack> inv = p.getInventory().iterator();
-					while (inv.hasNext())
-					{
+					while (inv.hasNext()) {
 						ItemStack item = (ItemStack)inv.next();
-						try
-						{
+						try {
 							BookMeta bm = (BookMeta)item.getItemMeta();
 							if ((bm.getAuthor().equalsIgnoreCase(player.getName())) && (bm.getTitle().equalsIgnoreCase("Autograph Book")))
 							{
@@ -140,14 +119,11 @@ public class CommandManager implements CommandExecutor {
 						catch (ClassCastException localClassCastException2) {}catch (NullPointerException localNullPointerException2) {}
 					}
 					ListIterator<ItemStack> ender = p.getEnderChest().iterator();
-					while (ender.hasNext())
-					{
+					while (ender.hasNext()) {
 						ItemStack item = (ItemStack)ender.next();
-						try
-						{
+						try {
 							BookMeta bm = (BookMeta)item.getItemMeta();
-							if ((bm.getAuthor().equalsIgnoreCase(player.getName())) && (bm.getTitle().equalsIgnoreCase("Autograph Book")))
-							{
+							if ((bm.getAuthor().equalsIgnoreCase(player.getName())) && (bm.getTitle().equalsIgnoreCase("Autograph Book"))) {
 								p.getEnderChest().remove(item);
 								this.invman.hold(player, item);
 								player.sendMessage(ChatColor.GREEN + "Your Autograph book was located. If you would like a new one, please get rid of this one.");
@@ -170,12 +146,9 @@ public class CommandManager implements CommandExecutor {
 			this.invman.hold(player, this.newbook);
 			player.getInventory().getItemInHand().setAmount(1);
 		}
-		if (cmd.getName().equalsIgnoreCase("sign"))
-		{
-			if (player.getItemInHand().getType().equals(Material.WRITTEN_BOOK))
-			{
-				if (args.length < 1)
-				{
+		if (cmd.getName().equalsIgnoreCase("sign")) {
+			if (player.getItemInHand().getType().equals(Material.WRITTEN_BOOK)) {
+				if (args.length < 1) {
 					player.sendMessage(ChatColor.GREEN + "You forgot to add message! Please type /signing for help");
 					return false;
 				}
@@ -243,26 +216,20 @@ public class CommandManager implements CommandExecutor {
 			player.sendMessage(ChatColor.AQUA + "If someone else has your book, please do /regain");
 			return true;
 		}
-		if (cmd.getName().equalsIgnoreCase("csign"))
-		{
-			if (!player.hasPermission("xblaze.charactersign"))
-			{
+		if (cmd.getName().equalsIgnoreCase("csign")) {
+			if (!player.hasPermission("xblaze.charactersign")) {
 				player.sendMessage(ChatColor.RED + "Only Characters may use this command!");
 				player.sendMessage(ChatColor.AQUA + "If you wish to become a character, please visit the forums:");
 				player.sendMessage(ChatColor.AQUA + "http://mcmagic.us/topic/character-claiming-open-from-216-223/");
 				return true;
 			}
-			if (args.length < 2)
-			{
+			if (args.length < 2) {
 				player.sendMessage(ChatColor.RED + "You forgot to add message! Please type /signing for help");
 				return false;
 			}
-			if (player.getItemInHand().getType().equals(Material.WRITTEN_BOOK))
-			{
+			if (player.getItemInHand().getType().equals(Material.WRITTEN_BOOK)) {
 				this.bookmeta = ((BookMeta)player.getItemInHand().getItemMeta());
-				if ((this.bookmeta.hasTitle()) && 
-						(this.bookmeta.getTitle().equalsIgnoreCase("Autograph Book")))
-				{
+				if ((this.bookmeta.hasTitle()) && (this.bookmeta.getTitle().equalsIgnoreCase("Autograph Book"))){
 					this.bookmeta.getPages();
 					this.buffer = "";
 					String character = args[0];
@@ -283,20 +250,14 @@ public class CommandManager implements CommandExecutor {
 			return true;
 		}
 		ItemStack thebook;
-		if (cmd.getName().equalsIgnoreCase("rmpage"))
-		{
+		if (cmd.getName().equalsIgnoreCase("rmpage")) {
 			player.sendMessage(ChatColor.RED + "This command is currently under development.");
 			player.sendMessage(ChatColor.RED + "It will not work at this time, sorry!");
-			if (player.getItemInHand().getType().equals(Material.WRITTEN_BOOK))
-			{
+			if (player.getItemInHand().getType().equals(Material.WRITTEN_BOOK)) {
 				this.bookmeta = ((BookMeta)player.getItemInHand().getItemMeta());
-				if ((this.bookmeta.hasTitle()) && 
-						(this.bookmeta.getTitle().equalsIgnoreCase("Autograph Book")))
-				{
-					if (this.bookmeta.getAuthor().equals(player.getName()))
-					{
-						if ((this.bookmeta.getPageCount() == 1) || (args[0].equalsIgnoreCase("1")))
-						{
+				if ((this.bookmeta.hasTitle()) && (this.bookmeta.getTitle().equalsIgnoreCase("Autograph Book"))) {
+					if (this.bookmeta.getAuthor().equals(player.getName())) {
+						if ((this.bookmeta.getPageCount() == 1) || (args[0].equalsIgnoreCase("1"))) {
 							player.sendMessage(ChatColor.RED + "The cover page is not removeable.");
 							return true;
 						}
@@ -330,21 +291,15 @@ public class CommandManager implements CommandExecutor {
 			}
 			return true;
 		}
-		if (cmd.getName().equalsIgnoreCase("regain"))
-		{
-			for (Player p : Bukkit.getOnlinePlayers())
-			{
-				if (p.getInventory().contains(Material.WRITTEN_BOOK))
-				{
+		if (cmd.getName().equalsIgnoreCase("regain")) {
+			for (Player p : Bukkit.getOnlinePlayers()) {
+				if (p.getInventory().contains(Material.WRITTEN_BOOK)) {
 					ListIterator<ItemStack> hi = p.getInventory().iterator();
-					while (hi.hasNext())
-					{
+					while (hi.hasNext()) {
 						ItemStack item = (ItemStack)hi.next();
-						try
-						{
+						try {
 							BookMeta bm = (BookMeta)item.getItemMeta();
-							if ((bm.getAuthor().equalsIgnoreCase(player.getName())) && (bm.getTitle().equalsIgnoreCase("Autograph Book")))
-							{
+							if ((bm.getAuthor().equalsIgnoreCase(player.getName())) && (bm.getTitle().equalsIgnoreCase("Autograph Book"))) {
 								p.getInventory().remove(item);
 								player.getInventory().addItem(new ItemStack[] { item });
 								p.sendMessage(ChatColor.AQUA + player.getName() + " has taken back their Autograph Book.");
@@ -354,17 +309,13 @@ public class CommandManager implements CommandExecutor {
 						catch (ClassCastException localClassCastException4) {}catch (NullPointerException localNullPointerException4) {}
 					}
 				}
-				if (p.getEnderChest().contains(Material.WRITTEN_BOOK))
-				{
+				if (p.getEnderChest().contains(Material.WRITTEN_BOOK)) {
 					ListIterator<ItemStack> hi = p.getEnderChest().iterator();
-					while (hi.hasNext())
-					{
+					while (hi.hasNext()) {
 						ItemStack item = (ItemStack)hi.next();
-						try
-						{
+						try {
 							BookMeta bm = (BookMeta)item.getItemMeta();
-							if ((bm.getAuthor().equalsIgnoreCase(player.getName())) && (bm.getTitle().equalsIgnoreCase("Autograph Book")))
-							{
+							if ((bm.getAuthor().equalsIgnoreCase(player.getName())) && (bm.getTitle().equalsIgnoreCase("Autograph Book"))) {
 								p.getEnderChest().remove(item);
 								player.getInventory().addItem(new ItemStack[] { item });
 								p.sendMessage(ChatColor.AQUA + player.getName() + " has taken back their Autograph Book.");
@@ -377,19 +328,14 @@ public class CommandManager implements CommandExecutor {
 			}
 			return true;
 		}
-		if (cmd.getName().equalsIgnoreCase("return"))
-		{
-			if (player.getInventory().contains(Material.WRITTEN_BOOK))
-			{
+		if (cmd.getName().equalsIgnoreCase("return")) {
+			if (player.getInventory().contains(Material.WRITTEN_BOOK)) {
 				ListIterator<ItemStack> hi = player.getInventory().iterator();
-				while (hi.hasNext())
-				{
+				while (hi.hasNext()) {
 					ItemStack item = (ItemStack)hi.next();
-					try
-					{
+					try {
 						BookMeta bm = (BookMeta)item.getItemMeta();
-						if ((!bm.getAuthor().equalsIgnoreCase(player.getName())) && (bm.getTitle().equalsIgnoreCase("Autograph Book")))
-						{
+						if ((!bm.getAuthor().equalsIgnoreCase(player.getName())) && (bm.getTitle().equalsIgnoreCase("Autograph Book"))) {
 							Player owner = Bukkit.getPlayer(bm.getAuthor());
 							player.getInventory().remove(item);
 							owner.getInventory().addItem(new ItemStack[] { item });
@@ -403,11 +349,8 @@ public class CommandManager implements CommandExecutor {
 			player.sendMessage(ChatColor.AQUA + "You do not have anyone else's autograph book.");
 			return true;
 		}
-		if (cmd.getName().equalsIgnoreCase("colors"))
-		{
-			if ((Bukkit.getServer().getPluginManager().isPluginEnabled("xBlazeBand")) && 
-					(player.getInventory().getHeldItemSlot() == 8))
-			{
+		if (cmd.getName().equalsIgnoreCase("colors")) {
+			if ((Bukkit.getServer().getPluginManager().isPluginEnabled("xBlazeBand")) && (player.getInventory().getHeldItemSlot() == 8)) {
 				player.sendMessage(ChatColor.RED + "You have a magic band in this slot. You are not permitted to remove it!");
 				return true;
 			}
@@ -423,16 +366,14 @@ public class CommandManager implements CommandExecutor {
 			this.invman.hold(player, this.newbook);
 			player.getInventory().getItemInHand().setAmount(1);
 		}
-		if (cmd.getName().equalsIgnoreCase("helpsign"))
-		{
+		if (cmd.getName().equalsIgnoreCase("helpsign")) {
 			player.sendMessage(ChatColor.BLUE + "We are in the progress of creating a video.");
 			player.sendMessage(ChatColor.BLUE + "We thank you for your paitents.");
 //			player.sendMessage(ChatColor.BLUE + "This video may help you out!");
 //			player.sendMessage(ChatColor.BLUE + "https://www.youtube.com/watch?v=XTTELd-rsUw");
 			return true;
 		}
-		if (cmd.getName().equalsIgnoreCase("signing"))
-		{
+		if (cmd.getName().equalsIgnoreCase("signing")) {
 			player.sendMessage(ChatColor.GOLD + "=============== " + ChatColor.YELLOW + "xBlazeSign" + ChatColor.GOLD + " ===============");
 			player.sendMessage(ChatColor.AQUA + "Commands in this menu are CLICKABLE! Try it out! ;)");
 			sendHelp(player, "/helpsign", null, "View a video tutorial about signing!");
