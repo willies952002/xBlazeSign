@@ -19,7 +19,9 @@
     </javac>
   </target>
   <target name="jar" depends="build" description="Compress to a Jar File.">
-    <jar jarfile="release/release.jar" basedir="bin/" encoding="Cp1252"></jar>
+    <jar jarfile="release/release.jar" basedir="bin/" encoding="Cp1252">
+      <zipfileset dir="." includes="*.yml" />
+    </jar>
   </target>
   <target name="clean" description="Remove all Temporary files/folders">
     <delete dir="bin/" />
