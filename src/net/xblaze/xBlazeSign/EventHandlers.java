@@ -146,7 +146,7 @@ public class EventHandlers implements Listener {
 			if ((bx - 0.75D <= ex) && (ex <= bx + 1.75D) && (bz - 0.75D <= ez) && (ez <= bz + 1.75D) && (by - 1 <= ey) && (ey <= by + 2.5D)) {
 				if ((ent instanceof Player)) {
 					Player target = (Player)ent;
-					if (isOnline(target).booleanValue()) {
+					if (isOnline(target)) {
 						if (!((p.isSneaking() && target.isSneaking()) && !(target.hasMetadata("dropper")))) return;
 						if (target.getInventory().getHeldItemSlot() == 8) {
 							this.invman.replace(target, 7, e.getItemDrop().getItemStack());
@@ -177,12 +177,12 @@ public class EventHandlers implements Listener {
 		}
 	}
 
-	public Boolean isOnline(Player p) {
+	public boolean isOnline(Player p) {
 		for (Player pl : Bukkit.getOnlinePlayers() ) {
 			if (p.equals(pl)) {
-				return Boolean.valueOf(true);
+				return true;
 			}
 		}
-		return Boolean.valueOf(false);
+		return false;
 	}
 }
