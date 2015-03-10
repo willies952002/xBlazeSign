@@ -20,7 +20,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 
 public class CommandManager implements CommandExecutor {
-
+	//	private BlazeSign plugin;
 	private BookMeta bookmeta;
 	private String buffer;
 	private ItemStack newbook;
@@ -34,7 +34,22 @@ public class CommandManager implements CommandExecutor {
 		this.pl = pl;
 	}
 
-
+	public void sendHelp(Player p, String command, String usage, String desc) {
+		if (usage != null) {
+			usage = " " + usage;
+			this.nmsman.newFancyMessage("")
+			.then(command + ChatColor.GRAY + usage)
+			.color(ChatColor.GOLD)
+			.suggest(command + usage)
+			.tooltip("§bClick for Example!")
+			.then(ChatColor.DARK_GRAY + " - ")
+			.then(desc)
+			.color(ChatColor.GREEN)
+			.send(p);
+		} else {
+			this.nmsman.newFancyMessage(ChatColor.GOLD + command + ChatColor.DARK_GRAY + " - ").command(command).tooltip("§bClick to Execute!").then(desc).color(ChatColor.GREEN).send(p);
+		}
+	}
 
 	@SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
